@@ -1,0 +1,39 @@
+var catsAreBetterThanDogs = function (pageObjects, data) {
+    pageObjects
+        .waitForElementVisible('@hdrInput')
+        .setValue('@hdrInput', data.hdr)
+        .waitForElementVisible('@dowInput')
+        .setValue('@dowInput', data.dow)
+        .waitForElementPresent(`[name="racInput"] option[value="${data.race}"]`)
+        .click(`[name="racInput"] option[value="${data.race}"]`)
+        .api.pause(5000)
+}
+var clearValues = function (pageObjects) {
+    pageObjects
+        .waitForElementVisible('@hdrInput')
+        .clearValue('@hdrInput')
+        .clearValue('@dowInput')
+}
+var boomer = {}
+module.exports = {
+    beforeEach: browser => {
+        boomer = browser.page.okPage()
+        boomer
+            .navigate()
+    },
+    after: browser => {
+        boomer
+            .end()
+    },
+    'Practice Enter Wanted Form Fill': browser => {
+        catsAreBetterThanDogs(boomer, {hdr: '1234567890', dow: '07/09/1997', race: 'H'})
+        clearValues(boomer)
+        boomer
+            .api.pause(10000)
+        catsAreBetterThanDogs(boomer, {hdr: '1234567890', dow: '12/16/1990', race: 'B'})
+    }
+}
+Collapse
+
+
+
